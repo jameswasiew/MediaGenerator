@@ -10,7 +10,6 @@
         public List<eFontWeight> fontWeights { get; set; }
 
         public enum eFontWeight {
-            Regular,
             Bold,
             Italic,
             Underlined
