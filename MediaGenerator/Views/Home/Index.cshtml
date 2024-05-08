@@ -2,6 +2,79 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+
+        $().ready(function () {
+
+            // Enable text based filtering for voices
+            $("#voiceSearchBox").bind("keyup", function() {
+                var text = $(this).val().toLowerCase();
+
+                Array.from(document.getElementById('voiceid').children).forEach(function (element)
+                {
+                    if (element.innerText.toLowerCase().includes(text) || text == '') {
+                        element.style.display = 'block';
+                    } else {
+                        element.style.display = 'none';
+                    }
+                });
+            });
+
+
+            // adjust listbox attributes
+            var listbox = $('#voiceid');
+            listbox.css('height', '250px');
+
+        });
+
+
+        function TestTTSVoice() {
+
+        var voice1 = {
+            id: $('#voiceid').val()[0],
+            username: 'test',
+            message: $('#txtMessage').val(),
+            speed: $('#speed').val(),
+            pitch: $('#pitch').val(),
+        };
+
+        var b = $.ajax({
+            type: 'post',
+            url: '@Url.Action("TestTTSVoice", "Home")',
+            contentType: "application/json",
+            data: JSON.stringify(voice1),
+            success: function(data) {
+
+                audioTester = new Audio("data:audio/wav;base64," + data);
+                audioTester.play();
+            }
+        });
+
+    }
+
+    function SetTTSVoice() {
+        var voice = {
+            id: $('#voiceid').val()[0],
+            username: $('#username').val(),
+            speed: $('#speed').val(),
+            pitch: $('#pitch').val(),
+        };
+
+        var a = $.ajax({
+            type: 'post',
+            url: '@Url.Action("SetTTSVoice", "Home")',
+            contentType: "application/json",
+            data: JSON.stringify(voice),
+            success: function() { }
+        });
+
+    }
+
+</script>
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
