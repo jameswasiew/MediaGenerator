@@ -9,68 +9,46 @@
 
         $().ready(function () {
 
-            // Enable text based filtering for voices
-            $("#voiceSearchBox").bind("keyup", function() {
-                var text = $(this).val().toLowerCase();
+            // // Enable text based filtering for voices
+            // $("#voiceSearchBox").bind("keyup", function() {
+            //     var text = $(this).val().toLowerCase();
 
-                Array.from(document.getElementById('voiceid').children).forEach(function (element)
-                {
-                    if (element.innerText.toLowerCase().includes(text) || text == '') {
-                        element.style.display = 'block';
-                    } else {
-                        element.style.display = 'none';
-                    }
-                });
+            //     Array.from(document.getElementById('voiceid').children).forEach(function (element)
+            //     {
+            //         if (element.innerText.toLowerCase().includes(text) || text == '') {
+            //             element.style.display = 'block';
+            //         } else {
+            //             element.style.display = 'none';
+            //         }
+            //     });
+            // });
+
+
+            // // adjust listbox attributes
+            // var listbox = $('#voiceid');
+            // listbox.css('height', '250px');
+
+        });
+
+
+        function GetText() {
+
+            var textSettings = {
+                fontSize: $('#txtFontSize').val(),
+                fontFamily: $('#ddlFontFamily').val(),
+                fontColor: $('#ddlFontColor').val(),
+                textMessage: $('#txtText').val(),
+            };
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("saveText", "Home")',
+                contentType: "application/json",
+                data: JSON.stringify(textSettings),
+                success: function(data) {
+
+                }
             });
-
-
-            // adjust listbox attributes
-            var listbox = $('#voiceid');
-            listbox.css('height', '250px');
-
-        });
-
-
-        function TestTTSVoice() {
-
-        var voice1 = {
-            id: $('#voiceid').val()[0],
-            username: 'test',
-            message: $('#txtMessage').val(),
-            speed: $('#speed').val(),
-            pitch: $('#pitch').val(),
-        };
-
-        var b = $.ajax({
-            type: 'post',
-            url: '@Url.Action("TestTTSVoice", "Home")',
-            contentType: "application/json",
-            data: JSON.stringify(voice1),
-            success: function(data) {
-
-                audioTester = new Audio("data:audio/wav;base64," + data);
-                audioTester.play();
-            }
-        });
-
-    }
-
-    function SetTTSVoice() {
-        var voice = {
-            id: $('#voiceid').val()[0],
-            username: $('#username').val(),
-            speed: $('#speed').val(),
-            pitch: $('#pitch').val(),
-        };
-
-        var a = $.ajax({
-            type: 'post',
-            url: '@Url.Action("SetTTSVoice", "Home")',
-            contentType: "application/json",
-            data: JSON.stringify(voice),
-            success: function() { }
-        });
-
     }
 
 </script>
@@ -78,11 +56,17 @@
 <div>
     <span style="font-size: 20px;">Font Settings</span>
     </br>
-    size: <input type="text" id="txtFontSize" />
+    size: <input type="text" id="txtFontSize" value="12" />
     </br>
-    family: <select id="ddlFontFamily">family:</select>
+    family: <select id="ddlFontFamily" value="calibri">family:</select>
     </br>
-    color: <input type="color" id="txtFontColor"/>
+    color: <input type="color" id="fontColor" value="#9f5b5b" />
+    </br>
+    text: <input type="text" id="txtText" value="sample"/>
+    </br>
 
+    <input type="button" onclick="GetText();" text="Generate"></input>
+    </br>
 
+    <div id="output" style="width: 125px;"/>
 </div>

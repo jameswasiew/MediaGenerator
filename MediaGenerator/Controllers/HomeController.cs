@@ -1,4 +1,5 @@
 using MediaGenerator.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -11,6 +12,14 @@ namespace MediaGenerator.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+        }
+
+
+        [HttpPost]
+        public ContentResult saveText([FromBody] TextSettings textSettings)
+        {
+
+            return Content("");
         }
 
         public IActionResult Index()
